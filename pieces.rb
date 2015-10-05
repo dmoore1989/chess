@@ -23,6 +23,25 @@ class SlidingPiece < Piece
   end
 end
 
+class Queen < SlidingPiece
+  COORDINATES= [
+    [0,1], [1,0], [-1, 0], [-1, -1], [1, 1], [0, -1], [-1,1], [1,-1]
+  ]
+
+end
+
+class Rook < SlidingPiece
+  COORDINATES= [
+    [0,1], [1,0], [-1, 0], [0, -1]
+  ]
+end
+
+class Bishop < SlidingPiece
+  COORDINATES= [
+      [-1, -1], [1, 1],[-1,1], [1,-1]
+  ]
+end
+
 class SteppingPiece < Piece
   def movedirs
     piece_position = board.position(self)
