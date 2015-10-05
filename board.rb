@@ -25,9 +25,9 @@ class Board
 
   attr_accessor :grid
 
-  def initialize
+  def initialize(new_game = true)
     @grid = Array.new(8){ Array.new(8) }
-    #place_pieces
+    place_pieces if new_game
   end
 
   def checked_king
@@ -112,6 +112,38 @@ class Board
       return true if piece.moves.include?(position)
     end
     false
+  end
+
+  def checkmate?(color)
+     in_check?(color) && valid_moves.nil?
+  end
+
+  def dup
+    dup_board = Board.new(false)
+    @grid.each_with_index do |row, i|
+      row.each_with_index do |item, j|
+        if item.is_a?(Piece)
+          dup_board[[i,j]] = create_piece(item, dup_board)
+        end
+      end
+    end
+  end
+
+  def create_piece(item, board)
+    case item.class
+    when Pawn
+      Pawn.new(board, item.color)
+    when Rook
+      Rook.new(board, item.color)
+    when Bishop
+      Bishop.new(board, item.color)
+    when Knight
+      Knight.new(board, item.color)
+    when Queen
+      Queen.new(board, item.color)
+    when King
+      King.new(board, item.color)
+    end
   end
 
   def find_king(color)
