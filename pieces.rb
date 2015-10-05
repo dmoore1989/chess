@@ -1,0 +1,3 @@
+class Pieces
+  
+end
