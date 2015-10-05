@@ -2,6 +2,26 @@ require_relative 'pieces'
 require 'byebug'
 
 class Board
+  RED_ORIGINAL_POSITIONS = {
+  7 => Rook.new(self, :red),
+  6 => Knight.new(self,:red),
+  5 => Bishop.new(self, :red),
+  4 => King.new(self, :red),
+  3 => Queen.new(self, :red),
+  2 => Bishop.new(self, :red),
+  1 => Knight.new(self, :red),
+  0 => Rook.new(self,:red)
+  }
+  BLACK_ORIGINAL_POSITIONS = {
+  7 => Rook.new(self, :black),
+  6 => Knight.new(self,:black),
+  5 => Bishop.new(self, :black),
+  4 => King.new(self, :black),
+  3 => Queen.new(self, :black),
+  2 => Bishop.new(self, :black),
+  1 => Knight.new(self, :black),
+  0 => Rook.new(self,:black)
+  }
 
   attr_accessor :grid
 
@@ -13,9 +33,18 @@ class Board
   def place_pieces
     #byebug
     @grid.each_with_index do |row, i|
-      if i < 2 || i > 5
-        row.map!{ |el| el = Queen.new(self) }
-        
+      if i == 1
+        row.map!{ |el| el = Pawn.new(self, :red) }
+      elsif i == 6
+        row.map!{ |el| el = Pawn.new(self, :black) }
+      elsif i == 0
+        row.each_with_index do |el, j|
+          @grid[i][j] = RED_ORIGINAL_POSITIONS[j]
+        end
+      elsif i == 7
+        row.each_with_index do |el, j|
+          @grid[i][j] = BLACK_ORIGINAL_POSITIONS[j]
+        end
       end
     end
   end

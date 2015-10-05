@@ -3,10 +3,10 @@ require 'byebug'
 
 class Piece
   attr_reader :board
-  def initialize(board)
+  def initialize(board, color)
     @value = :x
     @board = board
-    @color = red
+    @color = color
   end
 
   def to_s
@@ -93,4 +93,7 @@ class King < SteppingPiece
   COORDINATES= [
     [0,1], [1,0], [-1, 0], [-1, -1], [1, 1], [0, -1], [-1,1], [1,-1]
   ]
+end
+
+class Pawn < Piece
 end
