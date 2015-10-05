@@ -33,7 +33,7 @@ class Board
   end
 
   def in_bounds?(pos)
-    pos.any?{ |el| el > 7 || el < 0}
+    pos.none?{ |el| el > 7 || el < 0}
   end
 
   def start_test(start)
@@ -41,7 +41,7 @@ class Board
   end
 
   def end_test(end_pos)
-    raise ChessError.new "End position is off the board" if in_bounds?(end_pos)
+    raise ChessError.new "End position is off the board" if !in_bounds?(end_pos)
     raise ChessError.new "Position has your own piece" if self[end_pos].is_a?(Piece)
   end
 

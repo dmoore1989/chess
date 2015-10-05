@@ -40,4 +40,14 @@ class Display
     puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
     build_grid.each { |row| puts row.join }
   end
+
+  def move
+    result = nil
+    until result
+      render
+      result = get_input
+      puts @cursor_pos
+    end
+    result
+  end
 end
