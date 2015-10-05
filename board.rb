@@ -14,7 +14,7 @@ class Board
     #byebug
     @grid.each_with_index do |row, i|
       if i < 2 || i > 5
-        row.map!{ |el| el = Piece.new }
+        row.map!{ |el| el = Knight.new(self) }
       end
     end
   end
@@ -36,8 +36,8 @@ class Board
     pos.none?{ |el| el > 7 || el < 0}
   end
 
-  def contact(pos)
-    self(end_pos).is_a?(Piece)
+  def contact?(pos)
+    self[pos].is_a?(Piece)
   end
 
   def start_test(start)
@@ -70,5 +70,5 @@ class Board
     end
   end
 
-  end
+
 end

@@ -18,7 +18,9 @@ class Piece
 end
 
 class SlidingPiece < Piece
+  def movedirs
 
+  end
 end
 
 class SteppingPiece < Piece
@@ -33,7 +35,7 @@ class SteppingPiece < Piece
 
   def moves
     move_arr = movedirs
-    move_arr.select{|move| board.in_bounds?(move) && board.contact?(move) }
+    move_arr.select{|move| board.in_bounds?(move) && !board.contact?(move) }
   end
 end
 
@@ -49,3 +51,4 @@ class King < SteppingPiece
   COORDINATES= [
     [0,1], [1,0], [-1, 0], [-1, -1], [1, 1], [0, -1], [-1,1], [1,-1]
   ]
+end
