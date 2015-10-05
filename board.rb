@@ -39,14 +39,16 @@ class Board
   end
 
   def move(start, end_pos)
-    start_test(start)
-    end_test(end_pos)
-    rescue ChessError => e
-      puts e.message
-      #retry
-    move = self[start]
-    self[start] = nil
-    self[end_pos] = move
+    begin
+      start_test(start)
+      end_test(end_pos)
+      rescue ChessError => e
+        puts e.message
+        return nil
+      end
+      move = self[start]
+      self[start] = nil
+      self[end_pos] = move
   end
 
 end
