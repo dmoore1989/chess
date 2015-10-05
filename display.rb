@@ -8,6 +8,7 @@ class Display
   def initialize(board)
     @board = board
     @cursor_pos = [0, 0]
+    @selected = false
   end
 
   def build_grid
@@ -19,7 +20,12 @@ class Display
   def build_row(row, i)
     row.map.with_index do |piece, j|
       color_options = colors_for(i, j)
-      piece.to_s.colorize(color_options)
+      if piece.nil?
+        " ".colorize(color_options)
+      else
+        piece.to_s.colorize(color_options)
+
+      end
     end
   end
 
@@ -46,8 +52,15 @@ class Display
     until result
       render
       result = get_input
-      puts @cursor_pos
     end
+    @selected = true
     result
   end
+
+  def play
+    start = move
+    end_pos = move
+    @board.move(start, end_pos)
+  end
+
 end
