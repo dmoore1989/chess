@@ -36,6 +36,10 @@ class Board
     pos.none?{ |el| el > 7 || el < 0}
   end
 
+  def contact(pos)
+    self(end_pos).is_a?(Piece)
+  end
+
   def start_test(start)
     raise ChessError.new "No piece at start point" if self[start].nil?
   end
@@ -58,4 +62,13 @@ class Board
       self[end_pos] = move
   end
 
+  def position(piece)
+    @grid.each_with_index do |row, i|
+      row.each_with_index do |item, j|
+        return [i,j] if item == piece
+      end
+    end
+  end
+
+  end
 end

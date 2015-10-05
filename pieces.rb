@@ -1,7 +1,8 @@
 class Piece
-
-  def initialize
+  attr_reader :board
+  def initialize(board)
     @value = :x
+    @board = board
   end
 
   def to_s
@@ -12,8 +13,6 @@ class Piece
 
   end
 
-  def position
-  end
 
 
 end
@@ -23,15 +22,30 @@ class SlidingPiece < Piece
 end
 
 class SteppingPiece < Piece
+  def movedirs
+    piece_position = board.position(self)
+    self.class::COORDINATES.map do |c|
+      x, y = piece_position
+      dx, dy = c
+      [x + dx, y + dy]
+    end
+  end
 
+  def moves
+    move_arr = movedirs
+    move_arr.select{|move| board.in_bounds?(move) && board.contact?(move) }
+  end
 end
 
 class Knight < SteppingPiece
   COORDINATES = [
     [2,1], [1,2], [-1, -2], [-2, -1], [-1, 2], [-2, 1], [1, -2], [2, -1]
   ]
-  def movedirs
-    COORDINATES.each{ |c| }
-  end
+
 
 end
+
+class King < SteppingPiece
+  COORDINATES= [
+    [0,1], [1,0], [-1, 0], [-1, -1], [1, 1], [0, -1], [-1,1], [1,-1]
+  ]
