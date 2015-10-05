@@ -19,7 +19,22 @@ end
 
 class SlidingPiece < Piece
   def movedirs
-
+    piece_position = board.position(self)
+    move_arr = self.class::COORDINATES.map do |c|
+      i = 1
+      x, y = piece_position
+      dx, dy = c
+      [x + dx, y + dy]
+    end
+    valid_moves = []
+    move_arr.each do |move|
+      test_move = move.dup
+      while board.in_bounds?(test_move) && !board.contact?(test_move)
+        move << test_move
+        test_move = [move[0] + dx, move[1] + dy]
+      end
+    end
+    move
   end
 end
 
