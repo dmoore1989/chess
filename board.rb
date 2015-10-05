@@ -15,6 +15,7 @@ class Board
     @grid.each_with_index do |row, i|
       if i < 2 || i > 5
         row.map!{ |el| el = Queen.new(self) }
+        
       end
     end
   end
@@ -70,5 +71,35 @@ class Board
     end
   end
 
+  def in_check(color)
+    position = find_king(color)
+    opposing_pieces = find_opposing_pieces(color)
+    opposing_pieces.each do |piece|
+      return true if piece.moves.include?(position)
+    end
+    false
+  end
+
+  def find_king(color)
+    @grid.each_with_index do |row, i|
+      row.each_with_index do |item, j|
+        if item.is_a?(King) && item.color == color
+          return [i, j]
+        end
+      end
+    end
+  end
+
+  def find_opposing_pieces(color)
+    pieces = []
+    @grid.each_with_index do |row, i|
+      row.each_with_index do |item, j|
+        if item.is_a?(Piece) && item.color != color
+          pieces << item
+        end
+      end
+    end
+    return pieces
+  end
 
 end

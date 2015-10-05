@@ -6,6 +6,7 @@ class Piece
   def initialize(board)
     @value = :x
     @board = board
+    @color = red
   end
 
   def to_s
