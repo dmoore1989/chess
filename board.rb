@@ -31,7 +31,7 @@ class Board
   end
 
   def checked_king
-    @grid[0][0] = King.new(self,:black)
+    @grid[1][1] = King.new(self,:black)
     @grid[2][2] = Queen.new(self,:red)
   end
 
@@ -105,10 +105,9 @@ class Board
     end
   end
 
-  def in_check(color)
+  def in_check?(color)
     position = find_king(color)
     opposing_pieces = find_opposing_pieces(color)
-    # byebug
     opposing_pieces.each do |piece|
       return true if piece.moves.include?(position)
     end

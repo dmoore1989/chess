@@ -31,9 +31,11 @@ class SlidingPiece < Piece
       # byebug
       while board.in_bounds?(test_move) && !board.contact?(self, test_move)
         valid_moves << test_move
+        break if board[test_move].is_a?(Piece) && board[test_move].color != self.color
         x, y = test_move
         test_move = [x + dx, y + dy]
       end
+      x, y = board.position(self)
     end
     valid_moves
   end
