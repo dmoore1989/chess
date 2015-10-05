@@ -51,18 +51,36 @@ class Queen < SlidingPiece
     [0,1], [1,0], [-1, 0], [-1, -1], [1, 1], [0, -1], [-1,1], [1,-1]
   ]
 
+  def initialize(board,color)
+    super(board,color)
+    @value = :q
+  end
+
+
 end
 
 class Rook < SlidingPiece
   COORDINATES= [
     [0,1], [1,0], [-1, 0], [0, -1]
   ]
+
+  def initialize(board,color)
+    super(board,color)
+    @value = :r
+  end
+
 end
 
 class Bishop < SlidingPiece
   COORDINATES= [
       [-1, -1], [1, 1],[-1,1], [1,-1]
   ]
+
+  def initialize(board,color)
+    super(board,color)
+    @value = :b
+  end
+
 end
 
 class SteppingPiece < Piece
@@ -85,7 +103,10 @@ class Knight < SteppingPiece
   COORDINATES = [
     [2,1], [1,2], [-1, -2], [-2, -1], [-1, 2], [-2, 1], [1, -2], [2, -1]
   ]
-
+  def initialize(board,color)
+    super(board,color)
+    @value = :kn
+  end
 
 end
 
@@ -93,7 +114,25 @@ class King < SteppingPiece
   COORDINATES= [
     [0,1], [1,0], [-1, 0], [-1, -1], [1, 1], [0, -1], [-1,1], [1,-1]
   ]
+  def initialize(board,color)
+    super(board,color)
+    @value = :k
+  end
 end
 
 class Pawn < Piece
+
+  def initialize(board,color)
+    super(board,color)
+    @value = :p
+  end
+
+  def moves
+    x, y = board.position(self)
+    if self.color == :red
+      [x-1, y]
+    else
+      [x+1, y]
+    end
+  end
 end
