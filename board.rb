@@ -14,7 +14,7 @@ class Board
     #byebug
     @grid.each_with_index do |row, i|
       if i < 2 || i > 5
-        row.map!{ |el| el = Knight.new(self) }
+        row.map!{ |el| el = Queen.new(self) }
       end
     end
   end

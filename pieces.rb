@@ -1,3 +1,6 @@
+
+require 'byebug'
+
 class Piece
   attr_reader :board
   def initialize(board)
@@ -19,24 +22,28 @@ end
 
 class SlidingPiece < Piece
   def movedirs
-    piece_position = board.position(self)
-    move_arr = self.class::COORDINATES.map do |c|
-      i = 1
-      x, y = piece_position
-      dx, dy = c
-      [x + dx, y + dy]
-    end
+    x, y = board.position(self)
     valid_moves = []
-    move_arr.each do |move|
-      test_move = move.dup
+    self.class::COORDINATES.each do |change|
+      dx, dy = change
+      test_move = [x + dx, y + dy]
+      # byebug
       while board.in_bounds?(test_move) && !board.contact?(test_move)
-        move << test_move
-        test_move = [move[0] + dx, move[1] + dy]
+        valid_moves << test_move
+        x, y = test_move
+        test_move = [x + dx, y + dy]
       end
     end
-    move
+    valid_moves
   end
+
+  def move
+    movedirs
+  end
+
 end
+
+
 
 class Queen < SlidingPiece
   COORDINATES= [
