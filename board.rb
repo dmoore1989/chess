@@ -27,7 +27,12 @@ class Board
 
   def initialize
     @grid = Array.new(8){ Array.new(8) }
-    place_pieces
+    #place_pieces
+  end
+
+  def checked_king
+    @grid[0][0] = King.new(self,:black)
+    @grid[2][2] = Queen.new(self,:red)
   end
 
   def place_pieces
@@ -66,8 +71,8 @@ class Board
     pos.none?{ |el| el > 7 || el < 0}
   end
 
-  def contact?(pos)
-    self[pos].is_a?(Piece)
+  def contact?(piece, pos)
+    self[pos].is_a?(Piece) && self[pos].color == piece.color
   end
 
   def start_test(start)
@@ -103,6 +108,7 @@ class Board
   def in_check(color)
     position = find_king(color)
     opposing_pieces = find_opposing_pieces(color)
+    # byebug
     opposing_pieces.each do |piece|
       return true if piece.moves.include?(position)
     end

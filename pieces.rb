@@ -2,7 +2,7 @@
 require 'byebug'
 
 class Piece
-  attr_reader :board
+  attr_reader :board, :color
   def initialize(board, color)
     @value = :x
     @board = board
@@ -29,7 +29,7 @@ class SlidingPiece < Piece
       dx, dy = change
       test_move = [x + dx, y + dy]
       # byebug
-      while board.in_bounds?(test_move) && !board.contact?(test_move)
+      while board.in_bounds?(test_move) && !board.contact?(self, test_move)
         valid_moves << test_move
         x, y = test_move
         test_move = [x + dx, y + dy]
@@ -38,7 +38,7 @@ class SlidingPiece < Piece
     valid_moves
   end
 
-  def move
+  def moves
     movedirs
   end
 
@@ -95,7 +95,7 @@ class SteppingPiece < Piece
 
   def moves
     move_arr = movedirs
-    move_arr.select{|move| board.in_bounds?(move) && !board.contact?(move) }
+    move_arr.select{|move| board.in_bounds?(move) && !board.contact?(self, move) }
   end
 end
 
