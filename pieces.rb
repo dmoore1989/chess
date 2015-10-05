@@ -1,3 +1,3 @@
-class Pieces
-  
+class Piece
+
 end
