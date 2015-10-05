@@ -2,6 +2,9 @@ require_relative 'pieces'
 require 'byebug'
 
 class Board
+
+  attr_accessor :grid
+
   def initialize
     @grid = Array.new(8){ Array.new(8) }
     place_pieces
@@ -29,12 +32,16 @@ class Board
     @grid[x][y] = value
   end
 
+  def in_bounds?(pos)
+    pos.any?{ |el| el > 7 || el < 0}
+  end
+
   def start_test(start)
     raise ChessError.new "No piece at start point" if self[start].nil?
   end
 
   def end_test(end_pos)
-    raise ChessError.new "End position is off the board" if end_pos.any?{ |pos| pos > 7 || pos < 0 }
+    raise ChessError.new "End position is off the board" if in_bounds?(end_pos)
     raise ChessError.new "Position has your own piece" if self[end_pos].is_a?(Piece)
   end
 
