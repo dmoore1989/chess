@@ -1,3 +1,6 @@
+require_relative 'pieces'
+require 'byebug'
+
 class Board
   def initialize
     @grid = Array.new(8){ Array.new(8) }
@@ -5,14 +8,15 @@ class Board
   end
 
   def place_pieces
-    @grid.each_with_index |row, i|
+    #byebug
+    @grid.each_with_index do |row, i|
       if i < 2 || i > 5
-        row.each{ |el| @grid << Piece.new }
+        row.map!{ |el| el = Piece.new }
       end
     end
   end
 
-  class ChessError << StandardError
+  class ChessError < StandardError
   end
 
   def [](pos)
@@ -40,6 +44,9 @@ class Board
     rescue ChessError => e
       puts e.message
       #retry
+    move = self[start]
+    self[start] = nil
+    self[end_pos] = move
   end
 
 end
