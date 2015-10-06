@@ -39,17 +39,18 @@ class Display
     { background: bg}
   end
 
-  def render
+  def render(messages)
     system("clear")
-    puts "Pick a move"
-    puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
+    # byebug
+    messages.each { |message| puts message }
+    puts "Arrow keys or WASD to move, space or enter to confirm."
     build_grid.each { |row| puts row.join }
   end
 
-  def move
+  def move(messages)
     result = nil
     until result
-      render
+      render(messages)
       result = get_input
     end
     @selected = true

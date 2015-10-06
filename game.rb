@@ -51,25 +51,33 @@ class Player
   end
 
   def play_turn
-    # @game.display.render
+    messages = []
+
     begin
-      puts "Enter piece you would like to move"
-      start_piece = @game.display.move
+      messages << "Enter piece you would like to move"
+      start_piece = @game.display.move(messages)
       @game.start_test(start_piece, self)
     rescue ChessError => e
-      puts e.message
+      messages = []
+      messages << e.message
       retry
     end
-    system("clear")
+    messages = []
     begin
-      puts "Enter where you want to move this piece"
-      end_piece = @game.display.move
+      messages << "Enter where you want to move this piece"
+      end_piece = @game.display.move(messages)
       @game.end_test(end_piece, start_piece)
     rescue ChessError => e
-      puts e.message
+      messages = []
+      messages << e.message
       retry
     end
     system("clear")
     @game.move(start_piece, end_piece)
   end
+end
+
+if $PROGRAM_NAME == __FILE__
+  a = Game.new("a","b")
+  a.play
 end
