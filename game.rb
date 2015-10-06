@@ -19,7 +19,7 @@ class Game
       @current_player.play_turn
       switch_players
     end
-    display.render
+    display.render([],"")
     puts "CHECKMATE! - Winner is #{@players[board.checkmate?].name}"
   end
 
@@ -57,23 +57,25 @@ class Player
 
   def play_turn
     messages = []
+    error_message = ""
     messages << "Board is in check" if @game.board.in_check?(@game.player_color(self))
     end_piece = []
     messages << "#{@name}'s turn!!!'"
     begin
       messages << "Enter piece you would like to move"
-      start_piece = @game.display.move(messages)
+      start_piece = @game.display.move(messages, error_message)
       @game.start_test(start_piece, self)
     rescue ChessError => e
       messages.pop
-      messages << e.message
+      error_message = e.message
       retry
     end
     messages.pop
+    error_message =""
     messages << "You selected #{@game.board[start_piece]} at position #{start_piece}"
     begin
       messages << "Enter where you want to move this piece (escape to try again)"
-      end_piece = @game.display.move(messages)
+      end_piece = @game.display.move(messages, error_message)
       if end_piece == [-1, -1]
         message = []
         return play_turn
@@ -81,11 +83,12 @@ class Player
       @game.end_test(end_piece, start_piece)
     rescue ChessError => e
       messages.pop
-      messages << e.message
+      error_message = e.message
       retry
     end
     system("clear")
     messages = []
+    error_message = ""
     @game.move(start_piece, end_piece)
   end
 end
