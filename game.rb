@@ -85,6 +85,7 @@ class Player
       retry
     end
     system("clear")
+    messages = []
     @game.move(start_piece, end_piece)
   end
 end

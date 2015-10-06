@@ -150,29 +150,29 @@ class Board
       row.each_with_index do |item, j|
         if item.is_a?(Piece)
           # byebug
-          dup_board[[i,j]] = create_piece(item, dup_board)
+          dup_board[[i,j]] = item.class.new(dup_board, item.color)
         end
       end
     end
     dup_board
   end
 
-  def create_piece(item, board)
-    case item.class.to_s
-    when "Pawn"
-      Pawn.new(board, item.color)
-    when "Rook"
-      Rook.new(board, item.color)
-    when "Bishop"
-      Bishop.new(board, item.color)
-    when "Knight"
-      Knight.new(board, item.color)
-    when "Queen"
-      Queen.new(board, item.color)
-    when "King"
-      King.new(board, item.color)
-    end
-  end
+  # def create_piece(item, board)
+  #   case item.class.to_s
+  #   when "Pawn"
+  #     Pawn.new(board, item.color)
+  #   when "Rook"
+  #     Rook.new(board, item.color)
+  #   when "Bishop"
+  #     Bishop.new(board, item.color)
+  #   when "Knight"
+  #     Knight.new(board, item.color)
+  #   when "Queen"
+  #     Queen.new(board, item.color)
+  #   when "King"
+  #     King.new(board, item.color)
+  #   end
+  # end
 
   def find_king(color)
     @grid.each_with_index do |row, i|
