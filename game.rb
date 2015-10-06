@@ -52,6 +52,7 @@ class Player
 
   def play_turn
     messages = []
+    end_piece = []
 
     begin
       messages << "Enter piece you would like to move"
@@ -64,8 +65,12 @@ class Player
     end
     messages = []
     begin
-      messages << "Enter where you want to move this piece"
+      messages << "Enter where you want to move this piece (escape to try again)"
       end_piece = @game.display.move(messages)
+      if end_piece == [-1, -1]
+        message = []
+        return play_turn
+      end
       @game.end_test(end_piece, start_piece)
     rescue ChessError => e
       messages = []
