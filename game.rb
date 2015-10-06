@@ -1,13 +1,17 @@
 
 
 require_relative 'board'
+require_relative 'display'
 
 class Game
+
+  attr_reader :display
 
   def initialize(player1, player2)
     @board = Board.new
     @players = {:red => Player.new(player1, self), :black => Player.new(player2, self)}
     @current_player = @players[:red]
+    @display = Display.new(@board)
   end
 
   def play
@@ -47,9 +51,10 @@ class Player
   end
 
   def play_turn
+    # @game.display.render
     begin
       puts "Enter piece you would like to move"
-      start_piece = gets.chomp.split(", ").map(&:to_i)
+      start_piece = @game.display.move
       @game.start_test(start_piece, self)
     rescue ChessError => e
       puts e.message
@@ -57,7 +62,7 @@ class Player
     end
     begin
       puts "Enter where you want to move this piece"
-      end_piece = gets.chomp.split(", ").map(&:to_i)
+      end_piece = @game.display.move
       @game.end_test(end_piece, start_piece)
     rescue ChessError => e
       puts e.message
