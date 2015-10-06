@@ -73,9 +73,9 @@ class Board
     self[pos].is_a?(Piece) && self[pos].color == piece.color
   end
 
-  def start_test(start)
+  def start_test(start, color)
     raise ChessError.new "No piece at start point" if self[start].nil?
-    raise ChessError.new "Piece belongs to other player" if self[start].color
+    raise ChessError.new "Piece belongs to other player" if self[start].color != color
   end
 
   def end_test(end_pos, start)

@@ -1,3 +1,5 @@
+
+
 require_relative 'board'
 
 class Game
@@ -20,8 +22,9 @@ class Game
     @current_player == @players[:red] ? @current_player = @players[:black] : @current_player = @players[:red]
   end
 
-  def start_test(pos)
-    @board.start_test(pos)
+  def start_test(pos, player)
+    color = @players.invert[player]
+    @board.start_test(pos, color)
   end
 
 end
@@ -39,13 +42,18 @@ class Player
     begin
       puts "Enter piece you would like to move"
       start_piece = gets.chomp.split(", ").map(&:to_i)
-      @game.start_test(start_piece)
+      @game.start_test(start_piece, self)
     rescue ChessError => e
       puts e.message
       retry
     end
-
-
-
+    begin
+      puts "Enter where you want to move this piece"
+      end_piece = gets.chomp.split(", ").map(&:to_i)
+      @game.end_test(end_piece, start_piece)
+    rescue ChessError => e
+      puts e.message
+      retry
+    end
   end
 end
