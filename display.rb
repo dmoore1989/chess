@@ -42,9 +42,9 @@ class Display
   def render(messages)
     system("clear")
     # byebug
-    messages.each { |message| puts message }
     puts "Arrow keys or WASD to move, space or enter to confirm."
     build_grid.each { |row| puts row.join }
+    messages.each { |message| puts message }
   end
 
   def move(messages)

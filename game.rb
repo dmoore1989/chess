@@ -5,7 +5,7 @@ require_relative 'display'
 
 class Game
 
-  attr_reader :display
+  attr_reader :display, :board
 
   def initialize(player1, player2)
     @board = Board.new
@@ -53,17 +53,18 @@ class Player
   def play_turn
     messages = []
     end_piece = []
-
+    messages << "#{@name}'s turn!!!'"
     begin
       messages << "Enter piece you would like to move"
       start_piece = @game.display.move(messages)
       @game.start_test(start_piece, self)
     rescue ChessError => e
-      messages = []
+      messages.pop
       messages << e.message
       retry
     end
-    messages = []
+    messages.pop
+    messages << "You selected #{@game.board[start_piece]} at position #{start_piece}"
     begin
       messages << "Enter where you want to move this piece (escape to try again)"
       end_piece = @game.display.move(messages)
@@ -73,7 +74,7 @@ class Player
       end
       @game.end_test(end_piece, start_piece)
     rescue ChessError => e
-      messages = []
+      messages.pop
       messages << e.message
       retry
     end
