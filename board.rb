@@ -14,10 +14,10 @@ class Board
   end
 
   def checked_king
-    @grid[0][0] = King.new(self,:black)
-    @grid[1][2] = Queen.new(self,:red)
-    #@grid[2][2] = Queen.new(self,:red)
-    #@grid[0][2] = Queen.new(self,:red)
+    @grid[0][0] = King.new(self,:red)
+    @grid[2][0] = Queen.new(self,:black)
+    @grid[2][2] = Queen.new(self,:black)
+    @grid[0][2] = Queen.new(self,:black)
   end
 
   def place_pieces

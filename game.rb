@@ -9,8 +9,9 @@ class Game
 
   def initialize(player1, player2)
     @board = Board.new
+
     @players = {:red => Player.new(player1, self), :black => Player.new(player2, self)}
-    @current_player = @players[:red]
+    @current_player = @players[:black]
     @display = Display.new(@board)
   end
 
@@ -19,7 +20,7 @@ class Game
       @current_player.play_turn
       switch_players
     end
-    puts "Winner is #{@players[board.checkmate]}"
+    puts "Winner is #{@players[board.checkmate?].name}"
   end
 
   def switch_players
@@ -27,7 +28,7 @@ class Game
   end
 
   def start_test(pos, player)
-    color = @players.invert[player]
+    color = player_color(player)
     @board.start_test(pos, color)
   end
 
@@ -39,11 +40,15 @@ class Game
     @board.move(start, end_pos)
   end
 
+  def player_color(player)
+    @players.invert[player]
+  end
+
 end
 
 class Player
 
-  attr_writer :name
+  attr_accessor :name
 
   def initialize(name, game)
     @name = name
@@ -52,6 +57,7 @@ class Player
 
   def play_turn
     messages = []
+    messages << "Board is in check" if @game.board.in_check?(@game.player_color(self))
     end_piece = []
     messages << "#{@name}'s turn!!!'"
     begin

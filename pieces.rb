@@ -155,8 +155,14 @@ class Pawn < Piece
     # byebug
     if self.color == :red && board[[x + 1 , y] ].nil?
       moves << [x+ 1, y]
+      if x == 1
+        moves << [x + 2, y ]
+      end
     elsif board[[x - 1 , y] ].nil?
       moves << [x-1, y]
+      if x == 6
+        moves << [x - 2, y]
+      end
     end
     [[ 1, 1], [1, -1]].each do |pos|
       dx, dy = pos
