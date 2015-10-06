@@ -12,7 +12,9 @@ class Board
 
   def checked_king
     @grid[0][0] = King.new(self,:black)
-    @grid[1][1] = Queen.new(self,:red)
+    #@grid[2][0] = Queen.new(self,:red)
+    #@grid[2][2] = Queen.new(self,:red)
+    @grid[0][2] = Queen.new(self,:red)
   end
 
   def place_pieces
@@ -74,15 +76,16 @@ class Board
     raise ChessError.new "No piece at start point" if self[start].nil?
   end
 
-  def end_test(end_pos)
+  def end_test(end_pos, color)
     raise ChessError.new "End position is off the board" if !in_bounds?(end_pos)
-    raise ChessError.new "Position has your own piece" if self[end_pos].is_a?(Piece)
+    raise ChessError.new "Position has your own piece" if self[end_pos].is_a?(Piece) && self[end_pos].color == color
   end
 
   def move(start, end_pos)
+    color = self[start].color
     begin
       start_test(start)
-      end_test(end_pos)
+      end_test(end_pos, color)
       rescue ChessError => e
         puts e.message
         return nil
@@ -110,15 +113,15 @@ class Board
   end
 
   def checkmate?(color)
-     in_check?(color) && valid_moves(color).nil?
+     in_check?(color) && valid_moves(color).empty?
   end
 
   def valid_moves(color)
     valid = []
     @grid.each_with_index do |row, i|
       row.each_with_index do |item, j|
-        if item && item.color == color
-          valid << item.valid_moves
+        if (item) && (item.color == color)
+          valid += item.valid_moves
         end
       end
     end
