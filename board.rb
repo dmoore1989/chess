@@ -1,6 +1,9 @@
 require_relative 'pieces'
 require 'byebug'
 
+class ChessError < StandardError
+end
+
 class Board
 
   attr_accessor :grid
@@ -50,8 +53,7 @@ class Board
     end
   end
 
-  class ChessError < StandardError
-  end
+
 
   def [](pos)
     x, y = pos
@@ -73,6 +75,7 @@ class Board
 
   def start_test(start)
     raise ChessError.new "No piece at start point" if self[start].nil?
+    raise ChessError.new "Piece belongs to other player" if self[start].color
   end
 
   def end_test(end_pos, start)
@@ -82,6 +85,7 @@ class Board
       raise ChessError.new "Position is not a valid move and would leave the King in check"
     end
   end
+
 
   def move(start, end_pos)
     start_piece = self[start]
