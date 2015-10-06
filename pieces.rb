@@ -14,13 +14,13 @@ class Piece
   end
 
   def valid_moves
-  
+
     valid_moves = []
     start = board.position(self)
     test_moves = self.moves
     test_moves.each do |move|
       dup_board = board.dup
-      dup_board.move(start, move)
+      dup_board.move!(start, move)
       valid_moves << move unless dup_board.in_check?(color)
     end
     valid_moves

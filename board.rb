@@ -12,8 +12,8 @@ class Board
 
   def checked_king
     @grid[0][0] = King.new(self,:black)
-    #@grid[2][0] = Queen.new(self,:red)
-    #@grid[2][2] = Queen.new(self,:red)
+    @grid[2][0] = Queen.new(self,:red)
+    @grid[2][2] = Queen.new(self,:red)
     @grid[0][2] = Queen.new(self,:red)
   end
 
@@ -94,8 +94,6 @@ class Board
       return nil
     end
     move!(start, end_pos)
-
-
 
   end
 
