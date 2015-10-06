@@ -2,26 +2,6 @@ require_relative 'pieces'
 require 'byebug'
 
 class Board
-  RED_ORIGINAL_POSITIONS = {
-  7 => Rook.new(self, :red),
-  6 => Knight.new(self,:red),
-  5 => Bishop.new(self, :red),
-  4 => King.new(self, :red),
-  3 => Queen.new(self, :red),
-  2 => Bishop.new(self, :red),
-  1 => Knight.new(self, :red),
-  0 => Rook.new(self,:red)
-  }
-  BLACK_ORIGINAL_POSITIONS = {
-  7 => Rook.new(self, :black),
-  6 => Knight.new(self,:black),
-  5 => Bishop.new(self, :black),
-  4 => King.new(self, :black),
-  3 => Queen.new(self, :black),
-  2 => Bishop.new(self, :black),
-  1 => Knight.new(self, :black),
-  0 => Rook.new(self,:black)
-  }
 
   attr_accessor :grid
 
@@ -31,8 +11,8 @@ class Board
   end
 
   def checked_king
-    @grid[1][1] = King.new(self,:black)
-    @grid[2][2] = Queen.new(self,:red)
+    @grid[0][0] = King.new(self,:black)
+    @grid[1][1] = Queen.new(self,:red)
   end
 
   def place_pieces
@@ -44,13 +24,28 @@ class Board
         row.map!{ |el| el = Pawn.new(self, :black) }
       elsif i == 0
         row.each_with_index do |el, j|
-          @grid[i][j] = RED_ORIGINAL_POSITIONS[j]
+          @grid[i][j] = map_back_pieces(j, :red)
         end
       elsif i == 7
         row.each_with_index do |el, j|
-          @grid[i][j] = BLACK_ORIGINAL_POSITIONS[j]
+          @grid[i][j] = map_back_pieces(j, :black)
         end
       end
+    end
+  end
+
+  def map_back_pieces(element, color)
+    case element
+    when 0 , 7
+      Rook.new(self, color)
+    when 1 , 6
+      Knight.new(self, color)
+    when 2 , 5
+      Bishop.new(self, color)
+    when 4
+      King.new(self, color)
+    when 3
+      Queen.new(self, color)
     end
   end
 
@@ -115,7 +110,19 @@ class Board
   end
 
   def checkmate?(color)
-     in_check?(color) && valid_moves.nil?
+     in_check?(color) && valid_moves(color).nil?
+  end
+
+  def valid_moves(color)
+    valid = []
+    @grid.each_with_index do |row, i|
+      row.each_with_index do |item, j|
+        if item && item.color == color
+          valid << item.valid_moves
+        end
+      end
+    end
+    valid
   end
 
   def dup
@@ -123,25 +130,27 @@ class Board
     @grid.each_with_index do |row, i|
       row.each_with_index do |item, j|
         if item.is_a?(Piece)
+          # byebug
           dup_board[[i,j]] = create_piece(item, dup_board)
         end
       end
     end
+    dup_board
   end
 
   def create_piece(item, board)
-    case item.class
-    when Pawn
+    case item.class.to_s
+    when "Pawn"
       Pawn.new(board, item.color)
-    when Rook
+    when "Rook"
       Rook.new(board, item.color)
-    when Bishop
+    when "Bishop"
       Bishop.new(board, item.color)
-    when Knight
+    when "Knight"
       Knight.new(board, item.color)
-    when Queen
+    when "Queen"
       Queen.new(board, item.color)
-    when King
+    when "King"
       King.new(board, item.color)
     end
   end
