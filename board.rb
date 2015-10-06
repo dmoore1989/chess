@@ -125,7 +125,7 @@ class Board
     false
   end
 
-  def checkmate?(color)
+  def checkmate?
     [:red, :black].each do |color|
       return color if in_check?(color) && valid_moves(color).empty?
     end

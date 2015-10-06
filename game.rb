@@ -15,7 +15,7 @@ class Game
   end
 
   def play
-    until board.checkmate
+    until @board.checkmate?
       @current_player.play_turn
       switch_players
     end
@@ -60,6 +60,7 @@ class Player
       puts e.message
       retry
     end
+    system("clear")
     begin
       puts "Enter where you want to move this piece"
       end_piece = @game.display.move
@@ -68,6 +69,7 @@ class Player
       puts e.message
       retry
     end
+    system("clear")
     @game.move(start_piece, end_piece)
   end
 end
