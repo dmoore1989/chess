@@ -3,10 +3,12 @@ require 'byebug'
 
 class Piece
   attr_reader :board, :color
+  attr_accessor :first_move
   def initialize(board, color)
     @value = :x
     @board = board
     @color = color
+    @first_move = true
   end
 
   def to_s
@@ -147,35 +149,45 @@ class Pawn < Piece
   def initialize(board,color)
     super(board,color)
     @value = :p
+
   end
 
   def moves
     moves = []
     x, y = board.position(self)
-    # byebug
-    if self.color == :red && board[[x + 1 , y] ].nil?
+    if self.color == :red && empty?([x + 1 , y])
       moves << [x+ 1, y]
-      if x == 1
+      if @first_move
         moves << [x + 2, y ]
       end
-    elsif board[[x - 1 , y] ].nil?
+
+      [[ 1, 1], [1, -1]].each do |pos|
+        dx, dy = pos
+        if attackable_pos?([x + dx, y + dy])
+          moves << [x + dx , y + dy]
+        end
+      end
+    elsif empty?([x - 1 , y])
       moves << [x-1, y]
-      if x == 6
+      if @first_move
         moves << [x - 2, y]
       end
-    end
-    [[ 1, 1], [1, -1]].each do |pos|
-      dx, dy = pos
-      if (self.color == :red) && board[[x + dx , y + dy] ].is_a?(Piece) && board[[x + dx , y + dy]].color != self.color && @board.in_bounds?([x + dx, y + dy])
-        moves << [x + dx , y + dy]
-      end
-    end
     [[ -1, 1], [-1, -1]].each do |pos|
-      dx, dy = pos
-      if board[[x + dx , y + dy ]].is_a?(Piece) && board[[x + dx , y + dy]].color != self.color && @board.in_bounds?([x + dx, y + dy])
-        moves << [x + dx , y + dy]
+        dx, dy = pos
+
+        if  attackable_pos?([x + dx, y + dy])
+          moves << [x + dx , y + dy]
+        end
       end
     end
     moves
+  end
+
+  def empty?(pos)
+    board[pos].nil? && @board.in_bounds?(pos)
+  end
+
+  def attackable_pos?(pos)
+    board[pos].is_a?(Piece) && board[pos].color != self.color && @board.in_bounds?(pos)
   end
 end

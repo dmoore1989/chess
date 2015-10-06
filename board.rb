@@ -14,10 +14,10 @@ class Board
   end
 
   def checked_king
-    @grid[0][0] = King.new(self,:red)
-    @grid[2][0] = Queen.new(self,:black)
-    @grid[2][2] = Queen.new(self,:black)
-    @grid[0][2] = Queen.new(self,:black)
+    @grid[1][1] = Pawn.new(self,:red)
+    @grid[2][2] = Pawn.new(self,:black)
+    #@grid[2][2] = Queen.new(self,:black)
+    #@grid[0][2] = Queen.new(self,:black)
   end
 
   def place_pieces
@@ -106,6 +106,7 @@ class Board
       move = self[start]
       self[start] = nil
       self[end_pos] = move
+      self[end_pos].first_move = false
   end
 
   def position(piece)

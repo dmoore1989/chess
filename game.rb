@@ -8,9 +8,9 @@ class Game
   attr_reader :display, :board
 
   def initialize(player1, player2)
-    @board = Board.new
-
-    @players = {:red => Player.new(player1, self), :black => Player.new(player2, self)}
+    @board = Board.new(false)
+    @board.checked_king
+    @players = {:black => Player.new(player1, self), :red => Player.new(player2, self)}
     @current_player = @players[:black]
     @display = Display.new(@board)
   end
@@ -20,7 +20,8 @@ class Game
       @current_player.play_turn
       switch_players
     end
-    puts "Winner is #{@players[board.checkmate?].name}"
+    display.render
+    puts "CHECKMATE! - Winner is #{@players[board.checkmate?].name}"
   end
 
   def switch_players
@@ -91,6 +92,6 @@ class Player
 end
 
 if $PROGRAM_NAME == __FILE__
-  a = Game.new("a","b")
+  a = Game.new("Black","Red")
   a.play
 end
