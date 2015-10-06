@@ -10,7 +10,20 @@ class Piece
   end
 
   def to_s
-    @value.to_s
+    case @value
+    when :k
+      "\u2654".colorize(color)
+    when :q
+      "\u2655".colorize(color)
+    when :r
+      "\u2656".colorize(color)
+    when :b
+      "\u2657".colorize(color)
+    when :kn
+      "\u2658".colorize(color)
+    when :p
+      "\u2659".colorize(color)
+    end
   end
 
   def valid_moves
