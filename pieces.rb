@@ -152,9 +152,10 @@ class Pawn < Piece
   def moves
     moves = []
     x, y = board.position(self)
-    if self.color == :red && !board.contact?(self, [x + 1, y])
-      moves << [x+1, y]
-    elsif !board.contact?(self, [x-1, y])
+    # byebug
+    if self.color == :red && board[[x + 1 , y] ].nil?
+      moves << [x+ 1, y]
+    elsif board[[x - 1 , y] ].nil?
       moves << [x-1, y]
     end
     [[ 1, 1], [1, -1]].each do |pos|
@@ -169,7 +170,6 @@ class Pawn < Piece
         moves << [x + dx , y + dy]
       end
     end
-
     moves
   end
 end
