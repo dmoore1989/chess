@@ -80,9 +80,9 @@ class Board
 
   def end_test(end_pos, start)
     raise ChessError.new "End position is off the board" if !in_bounds?(end_pos)
-    raise ChessError.new "Position has your own piece" if self[end_pos].is_a?(Piece) && self[end_pos].color == start.color
-    unless start.valid_moves.include?(end_pos)
-      raise ChessError.new "Position is not a valid move and would leave the King in check"
+    raise ChessError.new "Position has your own piece" if self[end_pos].is_a?(Piece) && self[end_pos].color == self[start].color
+    unless self[start].valid_moves.include?(end_pos)
+      raise ChessError.new "Position is not a valid move"
     end
   end
 
@@ -90,8 +90,8 @@ class Board
   def move(start, end_pos)
     start_piece = self[start]
     begin
-      start_test(start)
-      end_test(end_pos, start_piece)
+      start_test(start, start_piece.color)
+      end_test(end_pos, start)
 
     rescue ChessError => e
       puts e.message

@@ -27,6 +27,14 @@ class Game
     @board.start_test(pos, color)
   end
 
+  def end_test(end_pos, start_pos)
+    @board.end_test(end_pos, start_pos)
+  end
+
+  def move(start, end_pos)
+    @board.move(start, end_pos)
+  end
+
 end
 
 class Player
@@ -55,5 +63,6 @@ class Player
       puts e.message
       retry
     end
+    @game.move(start_piece, end_piece)
   end
 end

@@ -139,9 +139,9 @@ class Pawn < Piece
   def moves
     x, y = board.position(self)
     if self.color == :red
-      [x-1, y]
+      [[x+1, y]]
     else
-      [x+1, y]
+      [[x-1, y]]
     end
   end
 end
