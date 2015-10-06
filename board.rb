@@ -12,9 +12,9 @@ class Board
 
   def checked_king
     @grid[0][0] = King.new(self,:black)
-    @grid[2][0] = Queen.new(self,:red)
-    @grid[2][2] = Queen.new(self,:red)
-    @grid[0][2] = Queen.new(self,:red)
+    @grid[1][2] = Queen.new(self,:red)
+    #@grid[2][2] = Queen.new(self,:red)
+    #@grid[0][2] = Queen.new(self,:red)
   end
 
   def place_pieces
@@ -77,7 +77,7 @@ class Board
 
   def end_test(end_pos, start)
     raise ChessError.new "End position is off the board" if !in_bounds?(end_pos)
-    raise ChessError.new "Position has your own piece" if self[end_pos].is_a?(Piece) && self[end_pos].color == setart.color
+    raise ChessError.new "Position has your own piece" if self[end_pos].is_a?(Piece) && self[end_pos].color == start.color
     unless start.valid_moves.include?(end_pos)
       raise ChessError.new "Position is not a valid move and would leave the King in check"
     end
