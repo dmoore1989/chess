@@ -18,7 +18,6 @@ class Board
   end
 
   def place_pieces
-    #byebug
     @grid.each_with_index do |row, i|
       if i == 1
         row.map!{ |el| el = Pawn.new(self, :red) }
@@ -76,20 +75,32 @@ class Board
     raise ChessError.new "No piece at start point" if self[start].nil?
   end
 
-  def end_test(end_pos, color)
+  def end_test(end_pos, start)
     raise ChessError.new "End position is off the board" if !in_bounds?(end_pos)
-    raise ChessError.new "Position has your own piece" if self[end_pos].is_a?(Piece) && self[end_pos].color == color
+    raise ChessError.new "Position has your own piece" if self[end_pos].is_a?(Piece) && self[end_pos].color == setart.color
+    unless start.valid_moves.include?(end_pos)
+      raise ChessError.new "Position is not a valid move and would leave the King in check"
+    end
   end
 
   def move(start, end_pos)
-    color = self[start].color
+    start_piece = self[start]
     begin
       start_test(start)
-      end_test(end_pos, color)
-      rescue ChessError => e
-        puts e.message
-        return nil
-      end
+      end_test(end_pos, start_piece)
+
+    rescue ChessError => e
+      puts e.message
+      return nil
+    end
+    move!(start, end_pos)
+
+
+
+  end
+
+
+  def move!(start, end_pos)
       move = self[start]
       self[start] = nil
       self[end_pos] = move
