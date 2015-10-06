@@ -150,11 +150,26 @@ class Pawn < Piece
   end
 
   def moves
+    moves = []
     x, y = board.position(self)
-    if self.color == :red
-      [[x+1, y]]
-    else
-      [[x-1, y]]
+    if self.color == :red && !board.contact?(self, [x + 1, y])
+      moves << [x+1, y]
+    elsif !board.contact?(self, [x-1, y])
+      moves << [x-1, y]
     end
+    [[ 1, 1], [1, -1]].each do |pos|
+      dx, dy = pos
+      if (self.color == :red) && board[[x + dx , y + dy] ].is_a?(Piece) && board[[x + dx , y + dy]].color != self.color && @board.in_bounds?([x + dx, y + dy])
+        moves << [x + dx , y + dy]
+      end
+    end
+    [[ -1, 1], [-1, -1]].each do |pos|
+      dx, dy = pos
+      if board[[x + dx , y + dy ]].is_a?(Piece) && board[[x + dx , y + dy]].color != self.color && @board.in_bounds?([x + dx, y + dy])
+        moves << [x + dx , y + dy]
+      end
+    end
+
+    moves
   end
 end
