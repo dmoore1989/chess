@@ -20,7 +20,11 @@ class Game
       switch_players
     end
     display.render([],"")
-    puts "CHECKMATE! - Winner is #{@players[board.checkmate?].name}"
+    puts "CHECKMATE! - Winner is #{@players[game_winner].name}"
+  end
+
+  def game_winner
+    @players.each{ |k,_| return k if k != board.checkmate? }
   end
 
   def switch_players
